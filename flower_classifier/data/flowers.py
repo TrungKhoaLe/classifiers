@@ -8,7 +8,7 @@ from flower_classifier.stems.image import FlowerStem
 from flower_classifier.util import temporary_working_directory
 import toml
 import zipfile
-from pathlib import Path
+from torchvision import transforms
 
 
 RAW_DATA_DIRNAME = metadata.RAW_DATA_DIRNAME
@@ -20,7 +20,15 @@ class Flowers(BaseDataModule):
     def __init__(self, args: argparse.Namespace) -> None:
         super().__init__(args)
         self.data_dir = DL_DATA_DIRNAME
-        self.transform = FlowerStem()
+        self.train_transform = FlowerStem()
+        self.test_transform = FlowerStem()
+        self.test_transform.pil_transforms.transforms.clear()
+        self.test_transform.pil_transforms.transforms.extend(
+            [
+                transforms.Resize(255),
+                transforms.CenterCrop(224),
+            ]
+        )
         self.input_dims = metadata.DIMS
         self.output_dims = metadata.OUTPUT_DIMS
         self.mapping = metadata.MAPPING
@@ -36,9 +44,9 @@ class Flowers(BaseDataModule):
         train_dir = self.data_dir / "train"
         eval_dir = self.data_dir / "valid"
         test_dir = self.data_dir / "test"
-        self.data_train = datasets.ImageFolder(train_dir, transform=self.transform)
-        self.data_val = datasets.ImageFolder(eval_dir, transform=self.transform)
-        self.data_test = datasets.ImageFolder(test_dir, transform=self.transform)
+        self.data_train = datasets.ImageFolder(train_dir, transform=self.train_transform)
+        self.data_val = datasets.ImageFolder(eval_dir, transform=self.test_transform)
+        self.data_test = datasets.ImageFolder(test_dir, transform=self.test_transform)
 
 
 if __name__ == "__main__":
