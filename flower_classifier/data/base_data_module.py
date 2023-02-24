@@ -17,7 +17,7 @@ def load_and_print_info(data_module_class):
     dataset = data_module_class(args)
     dataset.prepare_data()
     dataset.setup()
-    print(dataset.data_train.samples[1])
+    print(dataset.data_train[0])
 
 
 def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
