@@ -10,7 +10,7 @@ LOSS = "cross_entropy"
 ONE_CYCLE_TOTAL_STEPS = 100
 
 
-class BaseLitModels(pl.LightningModule):
+class BaseLitModel(pl.LightningModule):
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__()
         self.model = model
@@ -31,9 +31,9 @@ class BaseLitModels(pl.LightningModule):
         self.one_cycle_max_lr = self.args.get("one_cycle_max_lr", None)
         self.one_cycle_total_steps = self.args.get("one_cycle_total_steps", ONE_CYCLE_TOTAL_STEPS)
 
-        self.train_acc = Accuracy()
-        self.val_acc = Accuracy()
-        self.test_acc = Accuracy()
+        self.train_acc = Accuracy(task="multiclass", num_classes=len(self.mapping))
+        self.val_acc = Accuracy(task="multiclass", num_classes=len(self.mapping))
+        self.test_acc = Accuracy(task="multiclass", num_classes=len(self.mapping))
 
     @staticmethod
     def add_to_argparse(parser):

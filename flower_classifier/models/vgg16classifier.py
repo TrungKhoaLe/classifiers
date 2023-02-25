@@ -1,5 +1,5 @@
 from torchvision import models
-from colections import OrderedDict
+from collections import OrderedDict
 from typing import Dict, Any
 from torch import nn
 import argparse

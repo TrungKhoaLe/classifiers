@@ -13,6 +13,7 @@ tqdm = "*"
 toml = "*"
 opendatasets = "*"
 gdown = "*"
+tensorboard = "*"
 
 [dev-packages]
 

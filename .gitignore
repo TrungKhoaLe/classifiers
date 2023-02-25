@@ -133,3 +133,13 @@ data/raw/**/*.zip
 data/downloaded
 data/processed
 data/interim
+
+# logging
+wandb
+*.pt
+*.ckpt
+lightning_logs/
+logs
+*/training/logs
+*/training/*sweep.yaml
+flagged
