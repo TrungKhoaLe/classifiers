@@ -25,6 +25,13 @@ def _setup_parser():
 
     # Basic arguments
     parser.add_argument(
+        "--wandb",
+        action="store_true",
+        default=False,
+        help="If passed, logs experiment results to Weights & Biases. Otherwise logs only to local Tensorboard.",
+    )
+
+    parser.add_argument(
         "--data_class",
         type=str,
         default="Flowers",
@@ -124,6 +131,15 @@ def main():
     summary_callback = pl.callbacks.ModelSummary(max_depth=2)
 
     callbacks = [summary_callback, checkpoint_callback]
+
+    if args.wandb:
+        logger = pl.loggers.WandbLogger(
+            log_model="all", save_dir=str(log_dir), job_type="train", project="flower_classification"
+        )
+        logger.watch(model, log_freq=max(100, args.log_every_n_steps))
+        logger.log_hyperparams(vars(args))
+        experiment_dir = logger.experiment.dir
+
     if args.stop_early:
         early_stopping_callback = pl.callbacks.EarlyStopping(
             monitor="validation/loss", mode="min", patience=args.stop_early
