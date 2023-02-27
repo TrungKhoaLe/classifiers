@@ -20,15 +20,8 @@ class Flowers(BaseDataModule):
     def __init__(self, args: argparse.Namespace) -> None:
         super().__init__(args)
         self.data_dir = DL_DATA_DIRNAME
-        self.train_transform = FlowerStem()
-        self.test_transform = FlowerStem()
-        self.test_transform.pil_transforms.transforms.clear()
-        self.test_transform.pil_transforms.transforms.extend(
-            [
-                transforms.Resize(255),
-                transforms.CenterCrop(224),
-            ]
-        )
+        self.train_transform = FlowerStem(augment=True)
+        self.test_transform = FlowerStem(augment=False)
         self.input_dims = metadata.DIMS
         self.output_dims = metadata.OUTPUT_DIMS
         self.mapping = metadata.MAPPING

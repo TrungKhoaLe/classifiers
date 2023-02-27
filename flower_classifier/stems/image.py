@@ -19,15 +19,23 @@ class ImageStem:
 
 
 class FlowerStem(ImageStem):
-    def __init__(self):
+    def __init__(self, augment: bool = False):
         super().__init__()
-        self.pil_transforms = transforms.Compose(
-            [
-                transforms.RandomRotation(30),
-                transforms.RandomResizedCrop(224),
-                transforms.RandomHorizontalFlip(),
-            ]
-        )
+        if augment:
+            self.pil_transforms = transforms.Compose(
+                [
+                    transforms.RandomRotation(30),
+                    transforms.RandomResizedCrop(224),
+                    transforms.RandomHorizontalFlip(),
+                ]
+            )
+        else:
+            self.pil_transforms = transforms.Compose(
+                [
+                    transforms.Resize(255),
+                    transforms.CenterCrop(224),
+                ]
+            )
         self.torch_transforms = torch.nn.Sequential(
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         )
