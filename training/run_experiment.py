@@ -85,7 +85,9 @@ def main():
 
     Sample command:
     ```
-    python training/run_experiment.py --max_epochs=3 --gpus='0,' --num_workers=20 --model_class=VGG16Classifier --data_class=Flowers
+    python training/run_experiment.py --max_epochs=8 --gpus='0,' \
+    --num_workers=24 --model_class=VGG16Classifier --data_class=Flowers \
+    --fc1_dim=8192 --fc2_dim=2048 --wandb --batch_size=32
     ```
 
     For basic help documentation, run the command

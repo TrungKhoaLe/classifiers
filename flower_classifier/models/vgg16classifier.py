@@ -28,12 +28,13 @@ class VGG16Classifier(nn.Module):
         fc2_dim = self.args.get("fc2_dim", FC2_DIM)
         fc_dropout = self.args.get("fc_dropout", FC_DROPOUT)
 
-        backbone = models.vgg16(pretrained=True)
-        layers = list(backbone.children())[:-1]
-        self.feature_extractor = nn.Sequential(*layers)
+        self.backbone = models.vgg16(pretrained=True)
+        self.backbone.eval()
+        for param in self.backbone.parameters():
+            param.requires_grad = False
 
-        fc_input_dim = backbone.classifier[0].in_features
-        self.classifier = nn.Sequential(
+        fc_input_dim = self.backbone.classifier[0].in_features
+        self.backbone.classifier = nn.Sequential(
             OrderedDict(
                 [
                     ("fc1", nn.Linear(fc_input_dim, fc1_dim)),
@@ -48,10 +49,7 @@ class VGG16Classifier(nn.Module):
         )
 
     def forward(self, x):
-        self.feature_extractor.eval()
-        with torch.no_grad():
-            representations = self.feature_extractor(x).flatten(1)
-        x = self.classifier(representations)
+        x = self.backbone(x)
         return x
 
     @staticmethod

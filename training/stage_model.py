@@ -12,7 +12,7 @@ from training.util import setup_data_and_model_from_args
 
 # these names are all set by the pl.loggers.WandbLogger
 MODEL_CHECKPOINT_TYPE = "model"
-BEST_CHECKPOINT_ALIAS = "best"
+BEST_CHECKPOINT_ALIAS = "best_k"
 MODEL_CHECKPOINT_PATH = "model.ckpt"
 LOG_DIR = Path("training") / "logs"
 
