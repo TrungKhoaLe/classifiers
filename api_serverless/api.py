@@ -3,7 +3,7 @@ import json
 from PIL import ImageStat
 
 from flower_classifier.flower_predictor import FlowerPredictor
-import text_recognizer.util as util
+import flower_classifier.util as util
 
 model = FlowerPredictor()
 
@@ -32,7 +32,7 @@ def _load_image(event):
     image_url = event.get("image_url")
     if image_url is not None:
         print("INFO url {}".format(image_url))
-        return util.read_image_pil(image_url, grayscale=True)
+        return util.read_image_pil(image_url, grayscale=False)
     else:
         image = event.get("image")
         if image is not None:
