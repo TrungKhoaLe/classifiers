@@ -37,7 +37,7 @@ def _load_image(event):
         image = event.get("image")
         if image is not None:
             print("INFO reading image from event")
-            return util.read_b64_image(image, grayscale=True)
+            return util.read_b64_image(image, grayscale=False)
         else:
             return None
 

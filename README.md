@@ -44,12 +44,32 @@ python training/stage_model.py --entity='your_account_name'
 
 ## Running the gradio app
 
+### Approach 1:
+
 If the pretrained model has been downloaded and lived in the right directory,
 you can run the following command to enjoy the final product.
 
 ```
 python flower_classifier/app_gradio/app.py
 ```
+
+### Approach 2:
+
+Build a container image and get the container up and running, using the
+following commands:
+
+```
+docker build -t flower-model-backend:1.0.0 . --file api_serverless/Dockerfile
+docker run -p 9000:8080 -d flower-model-backend:1.0.0
+```
+
+Now that the model server has been up and running, the Gradio app can be
+started.
+
+```
+python app_gradio/app.py --model_url=http://localhost:9000/2015-03-31/functions/function/invocations
+```
+
 
 ## Deploying to AWS
 

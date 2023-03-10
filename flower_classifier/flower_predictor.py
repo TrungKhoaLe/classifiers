@@ -1,4 +1,4 @@
-"""Detects a paragraph of text in an input image.
+"""Detec the type of flower in an input image.
 
 Example usage as a script:
   python flower_classifier/flower_predictor.py \
@@ -34,7 +34,7 @@ class FlowerPredictor:
 
     @torch.no_grad()
     def predict(self, image: Union[str, Path, Image.Image]) -> str:
-        """Predict/infer text in input image (which can be a file path or url)."""
+        """Predict/infer a type of flower in input image (which can be a file path or url)."""
         image_pil = image
         if not isinstance(image, Image.Image):
             image_pil = util.read_image_pil(image, grayscale=False)
@@ -63,8 +63,8 @@ def main():
     )
     args = parser.parse_args()
 
-    text_recognizer = FlowerPredictor()
-    pred_str = text_recognizer.predict(args.filename)
+    flower_predictor = FlowerPredictor()
+    pred_str = flower_predictor.predict(args.filename)
     print(pred_str)
 
 

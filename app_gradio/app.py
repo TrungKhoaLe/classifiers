@@ -54,9 +54,9 @@ def make_frontend(
     # build a basic browser interface to a Python function
     frontend = gr.Interface(
         fn=fn,  # which Python function are we interacting with?
-        outputs=gr.components.Textbox(),  # what output widgets does it need? the default text widget
+        outputs=gr.components.Textbox(label="Output"),  # what output widgets does it need? the default text widget
         # what input widgets does it need? we configure an image widget
-        inputs=gr.components.Image(type="pil", label="A flower"),
+        inputs=gr.components.Image(type="pil", label="Input"),
         title="\U0001F917 Flower Classifier",  # what should we display at the top of the page?
         thumbnail=FAVICON,  # what should we display when the link is shared, e.g. on social media?
         description=__doc__,  # what should we display just above the interface?
@@ -102,22 +102,22 @@ class PredictorBackend:
         return pred, metrics
 
     def _predict_from_endpoint(self, image):
-        """Send an image to an endpoint that accepts JSON and return the predicted text.
+        """Send an image to an endpoint that accepts JSON and return the predicted flower.
         The endpoint should expect a base64 representation of the image, encoded as a string,
-        under the key "image". It should return the predicted text under the key "pred".
+        under the key "image". It should return the predicted flower under the key "pred".
         Parameters
         ----------
         image
-            A PIL image of handwritten text to be converted into a string.
+            A PIL image of flower to be converted into a string.
         Returns
         -------
         pred
-            A string containing the predictor's guess of the text in the image.
+            A string containing the predictor's guess of the flower in the image.
         """
         encoded_image = util.encode_b64_image(image)
 
         headers = {"Content-type": "application/json"}
-        payload = json.dumps({"image": "data:image/png;base64," + encoded_image})
+        payload = json.dumps({"image": "data:image/jpg;base64," + encoded_image})
 
         response = requests.post(self.url, data=payload, headers=headers)
         pred = response.json()["pred"]
